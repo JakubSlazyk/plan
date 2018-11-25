@@ -37,12 +37,23 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div id='event-id' style="display:none"></div>
                     <div id='modal-text'></div>
                     <p>Nowa data: <input type="text" id="datepicker"></p>
+                    <p>Nowy blok: <input list="bloki" name="blok" id="blockpicker" onfocus="this.value=''">
+                        <datalist id="bloki">
+                            <option value="1">
+                            <option value="2">
+                            <option value="3">
+                            <option value="4">
+                            <option value="5">
+                            <option value="6">
+                            <option value="7">
+                        </datalist></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
-                    <button type="button" class="btn btn-primary">Przekładanie zajęć</button>
+                    <button type="button" class="btn btn-primary" onClick="przelozZajecia()">Przekładanie zajęć</button>
                 </div>
             </div>
         </div>

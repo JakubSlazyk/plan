@@ -24,11 +24,14 @@ function openModal(event) {
     console.log(event);
     $('#exampleModal').modal('show');
     $('#exampleModalLabel').text(event.title);
-    let eventStart;
-    let eventEnd;
+    let eventStart = new Date(event.start._i);
+    let eventEnd = new Date(event.end._i);
+    console.log(event.start._i);
+    console.log(event.end._i);
+    $('.modal-body').text(`${eventStart.getHours()}:${eventStart.getMinutes()}-${eventEnd.getHours()}:${eventEnd.getMinutes()}`);
+
 }
 function refreshPlan() {
-
     fetch("../plann", {
         cache: "no-cache",
         pragma: "no-cache",

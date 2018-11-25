@@ -28,8 +28,8 @@ function openModal(event) {
     let eventEnd = new Date(event.end._i);
     console.log(event.start._i);
     console.log(event.end._i);
-    $('.modal-body').text(`${eventStart.getHours()}:${eventStart.getMinutes()}-${eventEnd.getHours()}:${eventEnd.getMinutes()}`);
-
+    $('#modal-text').text(`${eventStart.getFullYear()}.${eventStart.getMonth()}.${eventStart.getDate()} ${eventStart.getHours()}:${eventStart.getMinutes()}-${eventEnd.getHours()}:${eventEnd.getMinutes()}\n`);
+    $("#datepicker").datepicker();
 }
 function refreshPlan() {
     fetch("../plann", {

@@ -96,11 +96,6 @@ function przelozZajecia() {
             refreshPlan();
         })
     })
-    // let eventToChange = $('#calendar').fullCalendar('clientEvents', $('#event-id').text())[0];
-    // let elementToDelete;
-    // events = events.slice(elementToDelete, 1);
-    // eventToChange
-
 }
 
 function refreshPlan() {

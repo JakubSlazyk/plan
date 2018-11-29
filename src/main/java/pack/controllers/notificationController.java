@@ -16,9 +16,9 @@ public class notificationController {
     @PostMapping(value = "/sendNotification")
     public void sendNotification(@RequestBody JSONObject request) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Twoje zajęcia")
+        stringBuilder.append("Twoje zajęcia ")
                 .append(request.get("className"))
-                .append("zostały przeniesione z ")
+                .append(" zostały przeniesione z ")
                 .append(request.get("oldDate"))
                 .append(" na ")
                 .append(request.get("newDate"));

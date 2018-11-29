@@ -1,0 +1,18 @@
+{
+    "osoby": [
+        {
+            "id": 1,
+            "imie": "Jakub",
+            "nazwisko": "Slazyk",
+            "grupa": "k5c1n1",
+            "rola": "student"
+        },
+        {
+            "id": 2,
+            "imie": "Szymon",
+            "nazwisko": "Kowalik",
+            "grupa": "k5c1n1",
+            "rola": "starosta"
+        }
+    ]
+}

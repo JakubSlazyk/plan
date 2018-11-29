@@ -1,5 +1,6 @@
 function getPlan() {
-    fetch("../plann", {
+    let url = 'http://localhost:8080/plan/plann';
+    fetch(url, {
         cache: "no-cache",
         pragma: "no-cache",
         "cache-control": "no-cache"
@@ -85,16 +86,34 @@ function przelozZajecia() {
     startDate.setHours(startDate.getHours() + 1);
     endDate.setHours(endDate.getHours() + 1);
     startDate = startDate.toISOString().slice(0, startDate.toISOString().length - 1);
-    endDate = endDate.toISOString(0, endDate.toISOString().length - 1);
+    endDate = endDate.toISOString().slice(0, endDate.toISOString().length - 1);
     console.log(startDate);
     console.log(endDate);
     fetchPlan().then((json) => {
-        json.events[$('#event-id').text() - 1].start = startDate;
-        json.events[$('#event-id').text() - 1].end = endDate;
-        console.log(json);
-        uploadPlan(json).then(() => {
-            refreshPlan();
+        // json.events[$('#event-id').text() - 1].start = startDate;
+        // json.events[$('#event-id').text() - 1].end = endDate;
+        let prosba = new Object();
+        fetchProsby().then((prosby) => {
+            let prosbyArray = prosby.prosby;
+            let id;
+            if (prosbyArray.length != 0)
+                id = prosbyArray[prosbyArray.length - 1].idProsby;
+            else
+                id = 1;
+            prosba.idProsby = id;
+            prosba.idOsoby = 1;
+            prosba.idZajec = $('#event-id').text();
+            prosba.dataProsby = new Date();
+            prosba.newStart = startDate;
+            prosba.newEnd = endDate;
+            prosby.prosby.push(prosba);
+            saveProsby(prosby);
+        }).then(() => {
+            // refreshPlan();
         })
+        // uploadPlan(json).then(() => {
+
+        // });
     })
 }
 
@@ -103,6 +122,7 @@ function refreshPlan() {
         cache: "no-cache",
         pragma: "no-cache",
         "cache-control": "no-cache",
+        credentials: "include"
     }).then((response) => response.json())
         .then((planJson) => {
             $('#calendar').fullCalendar('removeEvents');
@@ -112,22 +132,47 @@ function refreshPlan() {
         });
 }
 function fetchPlan() {
-    return fetch("../plann", {
+    let url = 'http://localhost:8080/plan/plann';
+    return fetch(url, {
         cache: "no-cache",
         pragma: "no-cache",
-        "cache-control": "no-cache"
+        "cache-control": "no-cache",
+        credentials: "include"
     }).then((response) => response.json());
 }
 
-function uploadPlan(plan) {
-    return fetch("../plann", {
+function saveProsby(prosby) {
+    let url = 'http://localhost:8080/plan/prosby';
+    return fetch(url, {
         method: 'post',
         cache: "no-cache",
         pragma: "no-cache",
+        "cache-control": "no-cache",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify(prosby)
+    });
+}
+
+let url = 'http://localhost:8080/plan/plann';
+function uploadPlan(plan) {
+    return fetch(url, {
+        method: 'post',
+        cache: "no-cache",
+        pragma: "no-cache",
+        credentials: "include",
         "cache-control": "no-cache",
         headers: {
             "Content-Type": "application/json; charset=utf-8"
         },
         body: JSON.stringify(plan)
     });
+}
+
+function fetchProsby() {
+    let url = 'http://localhost:8080/plan/prosby';
+    return fetch(url).
+        then((response) => response.json());
 }

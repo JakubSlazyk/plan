@@ -3,12 +3,14 @@
     {
       "user": "student",
       "pass": "password",
-      "role": "STUDENT"
+      "role": "STUDENT",
+      "id": 1
     },
     {
       "user": "wykladowca",
       "pass": "password",
-      "role": "WYKLADOWCA"
+      "role": "WYKLADOWCA",
+      "id": 2
     }
   ]
 }

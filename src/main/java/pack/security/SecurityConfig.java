@@ -22,13 +22,10 @@ import java.util.Set;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception{
-        http.authorizeRequests()
-                .antMatchers("/**")
-                .hasAnyRole("WYKLADOWCA", "STUDENT")
-                .and()
-                .formLogin();
-
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests().antMatchers("/**").hasAnyRole("WYKLADOWCA", "STUDENT").and().authorizeRequests()
+                .antMatchers("/plann").permitAll().antMatchers("/osoby").permitAll().antMatchers("/prosby").permitAll()
+                .and().formLogin().and().csrf().disable();
     }
 
     @Autowired
@@ -38,9 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         users.forEach(user -> {
             JSONObject usr = (JSONObject) user;
             try {
-                auth.inMemoryAuthentication()
-                        .withUser((String) usr.get("user"))
-                        .password("{noop}" + usr.get("pass"))
+                auth.inMemoryAuthentication().withUser((String) usr.get("user")).password("{noop}" + usr.get("pass"))
                         .roles((String) usr.get("role"));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -48,27 +43,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         });
     }
 
-    private JSONObject getUsersFromFile(String path){
+    private JSONObject getUsersFromFile(String path) {
         JSONParser parser = new JSONParser();
         try {
-            FileReader reader=new FileReader(ResourceUtils.getFile("classpath:users.json"));
+            FileReader reader = new FileReader(ResourceUtils.getFile("classpath:users.json"));
             Object obj = parser.parse(reader);
             reader.close();
             return (JSONObject) obj;
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
 
     }
 
-    private boolean saveUsersToFile(String path,JSONObject jsonObject){
+    private boolean saveUsersToFile(String path, JSONObject jsonObject) {
         try (FileWriter file = new FileWriter(ResourceUtils.getFile("classpath:users.json"))) {
 
             file.write(jsonObject.toJSONString());
             file.flush();
 
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }

@@ -1,0 +1,14 @@
+{
+  "users": [
+    {
+      "user": "student",
+      "pass": "password",
+      "role": "STUDENT"
+    },
+    {
+      "user": "wykladowca",
+      "pass": "password",
+      "role": "WYKLADOWCA"
+    }
+  ]
+}

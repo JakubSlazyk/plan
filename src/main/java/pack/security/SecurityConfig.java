@@ -23,9 +23,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/**").hasAnyRole("WYKLADOWCA", "STUDENT").and().authorizeRequests()
-                .antMatchers("/plann").permitAll().antMatchers("/osoby").permitAll().antMatchers("/prosby").permitAll()
-                .and().formLogin().and().csrf().disable();
+        http.authorizeRequests()
+                .antMatchers("/plan/wykladowca.html").hasRole("WYKLADOWCA")
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .defaultSuccessUrl("/plan/index.html", true)
+                .and()
+                .csrf().disable();
     }
 
     @Autowired

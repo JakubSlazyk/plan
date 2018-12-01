@@ -129,7 +129,6 @@ function prepareDataForTable(prosby) {
             });
             return response;
         });
-        // return response;
     });
 }
 

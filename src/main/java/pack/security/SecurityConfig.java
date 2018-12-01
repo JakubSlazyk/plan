@@ -53,7 +53,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         } catch (Exception e) {
             return null;
         }
-
     }
 
     private boolean saveUsersToFile(String path, JSONObject jsonObject) {

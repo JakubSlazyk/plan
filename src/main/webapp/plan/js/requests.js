@@ -43,21 +43,56 @@ function acceptProsba(event) {
         prosby.prosby = prosbyArray.filter((prosba) => prosba.idProsby != prosbaId);
         let prosba = prosbyArray.filter((prosba) => prosba.idProsby == prosbaId)[0];
         fetchZajecia().then((plan) => {
+            let className;
+            let oldDate;
+            let newDate;
             plan.events.forEach((zajecia) => {
                 if (zajecia.id == prosba.idZajec) {
                     console.log(zajecia);
+                    oldDate = parseDate(zajecia.start);
                     zajecia.start = prosba.newStart;
                     zajecia.end = prosba.newEnd;
+                    className = zajecia.title;
+                    newDate = parseDate(zajecia.start);
                 }
             });
-
-            savePlan(plan);
-            saveProsby(prosby);
-            location.reload();
+            fetchOsoby().then((osoby) => {
+                osobyArray = osoby.osoby;
+                console.log(osobyArray);
+                console.log(prosba);
+                let osoba = osobyArray.filter((osoba) => osoba.id === prosba.idOsoby)[0];
+                const email = osoba.email;
+                const replyTo = "plan@wat.edu.pl";
+                const toName = `${osoba.imie} ${osoba.nazwisko}`;
+                sendEmail(email, replyTo, className, toName, oldDate, newDate).then((response) => {
+                    savePlan(plan);
+                    saveProsby(prosby);
+                    location.reload();
+                })
+            });
         });
-        console.log(prosba);
     });
 }
+function parseDate(stringDate) {
+    let date = new Date(stringDate);
+    let parsedDate = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`
+    return parsedDate;
+}
+
+function sendEmail(toEmail, replyTo, className, toName, oldDate, newDate) {
+    var template_params = {
+        "toEmail": toEmail,
+        "replyTo": replyTo,
+        "className": className,
+        "toName": toName,
+        "oldDate": oldDate,
+        "newDate": newDate
+    }
+    var service_id = "default_service";
+    var template_id = "template_1APnUedw";
+    return emailjs.send(service_id, template_id, template_params);
+}
+
 function rejectProsba(event) {
     let prosbaId = event.path[0].getAttribute('id');
     fetchProsby().then((prosby) => {
@@ -131,5 +166,59 @@ function prepareDataForTable(prosby) {
         });
     });
 }
+function updateNavbar() {
+    fetchLoggedUserData().then((userInfo) => {
+        if (userInfo.role === "WYKLADOWCA") {
+            document.getElementById('prosbyLink').style.display = "inline-block";
+        } else {
+            document.getElementById('prosbyLink').style.display = "none";
+        }
+        let id = userInfo.id;
+        fetchOsoby().then(osoby => {
+            let osobyArray = osoby.osoby;
+            const osoba = osobyArray.filter(osoba => osoba.id === id)[0];
+            const grupa = osoba.grupa;
+            const userName = `${osoba.imie} ${osoba.nazwisko}`;
+            document.getElementById('user').textContent = userName;
+            document.getElementById('grupa').textContent = grupa;
+        });
+
+    });
+}
+
+
+function searchProsby() {
+    // Declare variables 
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("searchPros");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("prosby");
+    tr = table.getElementsByTagName("tr");
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 1; i < tr.length; i++) {
+        let tdArr = [...tr[i].getElementsByTagName("td")];
+        let shouldBeVisible = false;
+        tdArr.forEach((td) => {
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                    shouldBeVisible = true;
+                } else {
+                    if (!shouldBeVisible)
+                        tr[i].style.display = "none";
+                }
+            }
+        });
+
+    }
+}
+
+function fetchLoggedUserData() {
+    let url = 'http://localhost:8080/plan/user';
+    return fetch(url).then((response) => response.json());
+}
 
 fetchProsby().then((response) => prepareDataForTable(response.prosby).then(jsonToTable));
+updateNavbar();
+

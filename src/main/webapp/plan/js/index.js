@@ -21,14 +21,34 @@ function getPlan() {
             });
         });
 }
+function updateNavbar() {
+    fetchLoggedUserData().then((userInfo) => {
+        if (userInfo.role === "WYKLADOWCA") {
+            document.getElementById('prosbyLink').style.display = "inline-block";
+        } else {
+            document.getElementById('prosbyLink').style.display = "none";
+        }
+        let id = userInfo.id;
+        fetchOsoby().then(osoby => {
+            let osobyArray = osoby.osoby;
+            const osoba = osobyArray.filter(osoba => osoba.id === id)[0];
+            const grupa = osoba.grupa;
+            const userName = `${osoba.imie} ${osoba.nazwisko}`;
+            document.getElementById('user').textContent = userName;
+            document.getElementById('grupa').textContent = grupa;
+        });
+
+    });
+}
+
 function openModal(event) {
     console.log(event);
     $('#exampleModal').modal('show');
     $('#exampleModalLabel').text(event.title);
     let eventStart = new Date(event.start._i);
     let eventEnd = new Date(event.end._i);
-    console.log(event.start._i);
-    console.log(event.end._i);
+    console.log(eventStart);
+    console.log(eventStart);
     $('#modal-text').text(`Stara data: ${eventStart.getFullYear()}.${eventStart.getMonth()}.${eventStart.getDate()} ${eventStart.getHours()}:${eventStart.getMinutes()}-${eventEnd.getHours()}:${eventEnd.getMinutes()}\n`);
     $("#datepicker").datepicker();
     $('#event-id').text(event._id);
@@ -173,6 +193,17 @@ function uploadPlan(plan) {
 
 function fetchProsby() {
     let url = 'http://localhost:8080/plan/prosby';
+    return fetch(url).
+        then((response) => response.json());
+}
+
+function fetchLoggedUserData() {
+    let url = 'http://localhost:8080/plan/user';
+    return fetch(url).then((response) => response.json());
+}
+
+function fetchOsoby() {
+    let url = 'http://localhost:8080/plan/osoby';
     return fetch(url).
         then((response) => response.json());
 }

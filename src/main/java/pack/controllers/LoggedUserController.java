@@ -35,7 +35,6 @@ public class LoggedUserController {
         id.put("role",role);
         id.put("id",returnValue);
     return id;
-//        users.stream().filter(user->user.get("id"))
     }
 
     private JSONObject getUsersFromFile(String path) {

@@ -29,6 +29,12 @@
       "pass": "password",
       "role": "STAROSTA",
       "id": 5
+    },
+    {
+      "user": "wykladowca2",
+      "pass": "password",
+      "role": "WYKLADOWCA",
+      "id": 6
     }
   ]
 }

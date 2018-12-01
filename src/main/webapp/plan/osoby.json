@@ -34,6 +34,13 @@
             "nazwisko": "Bogdanowicz",
             "grupa": "i5s1n1",
             "email": "krowa2134@gmail.com"
+        },
+        {
+            "id": 6,
+            "imie": "Krzysztof",
+            "nazwisko": "Bogdan",
+            "grupa": "",
+            "email": "krowa2134@gmail.com"
         }
     ]
 }

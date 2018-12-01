@@ -148,21 +148,28 @@ function savePlan(plan) {
 }
 
 function prepareDataForTable(prosby) {
-    return fetchZajecia().then((response) => {
-        let plan = response.events;
-        prosby.forEach((prosba) => {
-            prosba["title"] = plan[prosba.idZajec - 1].title;
-        });
-        return prosby;
-    }).then((response) => {
-        return fetchOsoby().then((osoby) => {
-            let osobyWsz = osoby.osoby;
-            response.forEach((prosba) => {
-                prosba.imie = osobyWsz[prosba.idOsoby - 1].imie;
-                prosba.nazwisko = osobyWsz[prosba.idOsoby - 1].nazwisko;
-                prosba.grupa = osobyWsz[prosba.idOsoby - 1].grupa;
+    return fetchLoggedUserData().then((userData) => {
+        return fetchZajecia().then((response) => {
+            let plan = response.events;
+            prosby.forEach((prosba) => {
+                prosba["title"] = plan[prosba.idZajec - 1].title;
             });
-            return response;
+            prosby = prosby.filter((prosba) => {
+                let idZajec = prosba.idZajec;
+                let zajecia = plan.filter((zajecia) => zajecia.id == idZajec)[0];
+                return zajecia.idWykladowcy === userData.id;
+            });
+            return prosby;
+        }).then((response) => {
+            return fetchOsoby().then((osoby) => {
+                let osobyWsz = osoby.osoby;
+                response.forEach((prosba) => {
+                    prosba.imie = osobyWsz[prosba.idOsoby - 1].imie;
+                    prosba.nazwisko = osobyWsz[prosba.idOsoby - 1].nazwisko;
+                    prosba.grupa = osobyWsz[prosba.idOsoby - 1].grupa;
+                });
+                return response;
+            });
         });
     });
 }
@@ -219,6 +226,7 @@ function fetchLoggedUserData() {
     return fetch(url).then((response) => response.json());
 }
 
-fetchProsby().then((response) => prepareDataForTable(response.prosby).then(jsonToTable));
+fetchProsby().then((response) => prepareDataForTable(response.prosby).then(jsonToTable))
+    .catch((error) => {toastr.info('Nie masz zadnych próśb.');});
 updateNavbar();
 

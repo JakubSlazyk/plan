@@ -23,8 +23,8 @@ function getPlan() {
                     }
                     $('#calendar').fullCalendar({
                         theme: true,
-                        businessHours: true,
-                        editable: true,
+                        businessHours: false,
+                        editable: false,
                         header: {
                             left: 'prev,next today',
                             center: 'title',
@@ -60,16 +60,21 @@ function updateNavbar(osoba) {
 }
 
 function openModal(event) {
-    console.log(event);
-    $('#exampleModal').modal('show');
-    $('#exampleModalLabel').text(event.title);
-    let eventStart = new Date(event.start._i);
-    let eventEnd = new Date(event.end._i);
-    console.log(eventStart);
-    console.log(eventStart);
-    $('#modal-text').text(`Stara data: ${eventStart.getFullYear()}.${eventStart.getMonth()}.${eventStart.getDate()} ${eventStart.getHours()}:${eventStart.getMinutes()}-${eventEnd.getHours()}:${eventEnd.getMinutes()}\n`);
-    $("#datepicker").datepicker();
-    $('#event-id').text(event._id);
+    getUserRole().then((role) => {
+        if (role !== "STUDENT") {
+            $('#exampleModal').modal('show');
+            $('#exampleModalLabel').text(event.title);
+            let eventStart = new Date(event.start._i);
+            let eventEnd = new Date(event.end._i);
+            console.log(eventStart);
+            console.log(eventStart);
+            $('#modal-text').text(`Stara data: ${eventStart.getFullYear()}.${eventStart.getMonth()}.${eventStart.getDate()} ${eventStart.getHours()}:${eventStart.getMinutes()}-${eventEnd.getHours()}:${eventEnd.getMinutes()}\n`);
+            $("#datepicker").datepicker();
+            $('#event-id').text(event._id);
+        } else {
+            toastr.error("Tylko starosta moze wystepować o przełozenie zajęć.");
+        }
+    });
 }
 function przelozZajecia() {
     let blok = $('#blockpicker').val();
@@ -148,12 +153,12 @@ function przelozZajecia() {
                 let userId = user.id;
                 prosba.idOsoby = userId;
                 prosby.prosby.push(prosba);
-                saveProsby(prosby);
+                saveProsby(prosby).then((response) => {
+                    $('#exampleModal').modal('hide');
+                    toastr.success("Prośba została przesłana do prowadzącego.");
+                });
             });
         });
-        // uploadPlan(json).then(() => {
-
-        // });
     })
 }
 
@@ -291,6 +296,10 @@ function getAllUrlParams(url) {
     }
 
     return obj;
+}
+
+function getUserRole() {
+    return fetchLoggedUserData().then((user) => user.role);
 }
 
 function searchForGroup() {

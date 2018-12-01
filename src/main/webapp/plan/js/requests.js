@@ -104,24 +104,24 @@ function rejectProsba(event) {
 }
 
 function fetchProsby() {
-    let url = 'http://localhost:8080/plan/prosby';
+    let url = '../prosby';
     return fetch(url).
         then((response) => response.json());
 }
 
 function fetchZajecia() {
-    let url = 'http://localhost:8080/plan/plann';
+    let url = '../plann';
     return fetch(url).
         then((response) => response.json());
 }
 
 function fetchOsoby() {
-    let url = 'http://localhost:8080/plan/osoby';
+    let url = '../osoby';
     return fetch(url).
         then((response) => response.json());
 }
 function saveProsby(prosby) {
-    let url = 'http://localhost:8080/plan/prosby';
+    let url = '../prosby';
     return fetch(url, {
         method: 'post',
         cache: "no-cache",
@@ -134,7 +134,7 @@ function saveProsby(prosby) {
     });
 }
 function savePlan(plan) {
-    let url = 'http://localhost:8080/plan/plann';
+    let url = '../plann';
     return fetch(url, {
         method: 'post',
         cache: "no-cache",
@@ -215,7 +215,7 @@ function searchProsby() {
 }
 
 function fetchLoggedUserData() {
-    let url = 'http://localhost:8080/plan/user';
+    let url = '../user';
     return fetch(url).then((response) => response.json());
 }
 

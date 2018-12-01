@@ -121,16 +121,18 @@ function przelozZajecia() {
             else
                 id = 1;
             prosba.idProsby = id;
-            prosba.idOsoby = 1;
             prosba.idZajec = $('#event-id').text();
             prosba.dataProsby = new Date();
             prosba.newStart = startDate;
             prosba.newEnd = endDate;
-            prosby.prosby.push(prosba);
-            saveProsby(prosby);
-        }).then(() => {
-            // refreshPlan();
-        })
+            fetchLoggedUserData().then((user) => {
+                console.log(user);
+                let userId = user.id;
+                prosba.idOsoby = userId;
+                prosby.prosby.push(prosba);
+                saveProsby(prosby);
+            });
+        });
         // uploadPlan(json).then(() => {
 
         // });
@@ -152,7 +154,7 @@ function refreshPlan() {
         });
 }
 function fetchPlan() {
-    let url = 'http://localhost:8080/plan/plann';
+    let url = '../plann';
     return fetch(url, {
         cache: "no-cache",
         pragma: "no-cache",
@@ -162,7 +164,7 @@ function fetchPlan() {
 }
 
 function saveProsby(prosby) {
-    let url = 'http://localhost:8080/plan/prosby';
+    let url = '../prosby';
     return fetch(url, {
         method: 'post',
         cache: "no-cache",
@@ -176,7 +178,7 @@ function saveProsby(prosby) {
     });
 }
 
-let url = 'http://localhost:8080/plan/plann';
+let url = '../plann';
 function uploadPlan(plan) {
     return fetch(url, {
         method: 'post',
@@ -192,18 +194,18 @@ function uploadPlan(plan) {
 }
 
 function fetchProsby() {
-    let url = 'http://localhost:8080/plan/prosby';
+    let url = '../prosby';
     return fetch(url).
         then((response) => response.json());
 }
 
 function fetchLoggedUserData() {
-    let url = 'http://localhost:8080/plan/user';
+    let url = '../user';
     return fetch(url).then((response) => response.json());
 }
 
 function fetchOsoby() {
-    let url = 'http://localhost:8080/plan/osoby';
+    let url = '../osoby';
     return fetch(url).
         then((response) => response.json());
 }

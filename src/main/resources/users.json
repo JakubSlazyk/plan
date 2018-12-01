@@ -7,10 +7,28 @@
       "id": 1
     },
     {
+      "user": "starosta",
+      "pass": "password",
+      "role": "STAROSTA",
+      "id": 2
+    },
+    {
       "user": "wykladowca",
       "pass": "password",
       "role": "WYKLADOWCA",
-      "id": 2
+      "id": 3
+    },
+    {
+      "user": "student2",
+      "pass": "password",
+      "role": "STUDENT",
+      "id": 4
+    },
+    {
+      "user": "starosta2",
+      "pass": "password",
+      "role": "STAROSTA",
+      "id": 5
     }
   ]
 }

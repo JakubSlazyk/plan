@@ -1,36 +1,4 @@
 {
     "prosby": [
-        {
-            "idProsby": 1,
-            "idZajec": 1,
-            "idOsoby": 1,
-            "dataProsby": "2018-11-14T09: 50: 00.000",
-            "newStart": "2018-11-01T08: 00: 00.000",
-            "newEnd": "2018-11-01T09: 50: 00.000"
-        },
-        {
-            "idProsby": 2,
-            "idZajec": 2,
-            "idOsoby": 2,
-            "dataProsby": "2018-11-14T09: 50: 00.000",
-            "newStart": "2018-11-01T08: 00: 00.000",
-            "newEnd": "2018-11-01T09: 50: 00.000"
-        },
-        {
-            "idProsby": 3,
-            "idZajec": 3,
-            "idOsoby": 2,
-            "dataProsby": "2018-11-14T09: 50: 00.000",
-            "newStart": "2018-11-01T08: 00: 00.000",
-            "newEnd": "2018-11-01T09: 50: 00.000"
-        },
-        {
-            "idProsby": 4,
-            "idZajec": 4,
-            "idOsoby": 1,
-            "dataProsby": "2018-11-14T09: 50: 00.000",
-            "newStart": "2018-11-01T08: 00: 00.000",
-            "newEnd": "2018-11-01T09: 50: 00.000"
-        }
     ]
 }
